@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-WORD_BANK = {}
+WORD_BANK = ["code", "alpha", "internship", "python", "hangman", "programming"]
 
 
 @dataclass(frozen = True)
