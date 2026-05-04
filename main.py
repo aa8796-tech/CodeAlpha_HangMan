@@ -81,8 +81,11 @@ class HangmanApp:
                 pause()
                 continue
             
-            game.process_guess(guess)
-
+            if game.process_guess(guess):
+                display_message(f"Your guess is correct, well done.", MessageType.SUCCESS)
+            else:
+                display_message(f"You guessed wrong, you lost an attempt.)
+            pause()
         # Endgame: View the end result
         self.show_game_over(game)
 
