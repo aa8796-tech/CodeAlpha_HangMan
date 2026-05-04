@@ -6,5 +6,5 @@ from typing import Optional
 class Config:
   max_attempts: int = 6
   max_word_len: Optional[int] = None
-
+  
   
