@@ -81,7 +81,8 @@ class CLIUI:
             title (str): The text to display inside the header.
         """
         CLIUtility.display_divider()
-        print(f"{title:^{BORDER_LENGTH}}")
+        print(f"{title:
+                 ^{BORDER_LENGTH}}")
         CLIUtility.display_divider()
 
     @staticmethod
@@ -92,25 +93,32 @@ class CLIUI:
         
         Args:
             menu_title (str): The title to display above the menu.
-            menu_items (List[str]): The list of options available to the user.
+            menu_items (Iterable[str]): The list of options available to the user.
             error_message (str): Message to display upon an invalid selection.
             
         Returns:
             int: The validated choice as an integer (1-based index).
+        Raises:
+            ValueError: if `menu_items` is empty.
+            TypeError: if `menu_items` is not iterable
         """
-        # 1. Draw the UI components
-        CLIUtility.display_menu(menu_title, menu_items)
-        CLIUtility.display_divider()
+        if not isinstance(menu_items, Iterable):
+            raise TypeError("The menu should be iterable")
+        if menu_items:
+          # 1. Draw the UI components
+          CLIUtility.display_menu(menu_title, menu_items)
+          CLIUtility.display_divider()
         
-        # 2. Define the validation logic (must be digits and within the list range)
-        validator = lambda x: x.isdigit() and 1 <= int(x) <= len(menu_items)
+          # 2. Define the validation logic (must be digits and within the list range)
+          validator = lambda x: x.isdigit() and 1 <= int(x) <= len(menu_items)
         
-        # 3. Get validated input using the utility tool
-        choice = CLIUtility.handle_input(
+          # 3. Get validated input using the utility tool
+          choice = CLIUtility.handle_input(
             prompt="Enter your choice: ", 
             validator=validator, 
             error_message=error_message
-        )
+          )
         
-        # 4. Return the integer choice (SRP: Only get the choice, do not execute the action here)
-        return int(choice)
+          # 4. Return the integer choice (SRP: Only get the choice, do not execute the action here)
+          return int(choice)
+        raise ValueError("The list must contain at least one item")
