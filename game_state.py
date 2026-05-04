@@ -35,7 +35,7 @@ class GameState:
         """bool: True if the player has no remaining attempts, False otherwise."""
         return self.attempts_left <= 0
 
-    def process_guess(self, guess: str) -> None:
+    def process_guess(self, guess: str) -> bool:
         """
         Process a player's letter guess.
 
@@ -50,4 +50,6 @@ class GameState:
         
         if guess not in self.target_word:
             self.attempts_left -= 1
+            return False
+        return True
  
