@@ -1,124 +1,112 @@
-import os
-from typing import List, Callable
+from enum import StrEnum, auto
+from typing import List, Optional, Type
 
-# ==========================================
-# UI Configuration Constants
-# ==========================================
-BORDER_CHAR = "="
-BORDER_LENGTH = 50
+from utility import (
+    clear_screen,
+    pause,
+    read_input,
+    convert,
+    BORDER_CHAR,
+    BORDER_LENGTH
+)
 
-class CLIUtility:
-    """
-    A utility class providing basic, independent tools for CLI operations.
-    These methods handle simple screen and input tasks without being tied
-    to any specific UI layout or application logic.
-    """
-
-    @staticmethod
-    def pause() -> None:
-        """Pause the program execution until the user presses Enter."""
-        input("Press Enter to continue...")
-
-    @staticmethod
-    def clear_screen() -> None:
-        """Clear the terminal screen based on the operating system."""
-        os.system("cls" if os.name == "nt" else "clear")
-    
-    @staticmethod
-    def display_divider(border_char: str = BORDER_CHAR, border_length: int = BORDER_LENGTH) -> None:
-        """
-        Display a divider line without excessive vertical spacing.
-        """
-        print(border_char * border_length)
-        
-    @staticmethod
-    def display_menu(title: str, items: List[str], items_padding: int = 2) -> None:
-        """
-        Displays a title followed by a numbered list of items.
-        
-        Args:
-            title (str): The title of the menu.
-            items (List[str]): A list of options to display.
-            items_padding (int): Spaces to pad the item numbers for alignment.
-        """
-        print(title)
-        for i, item in enumerate(items, start=1):
-            # Fixed: Using single curly braces for correct f-string formatting
-            print(f"{i:>{items_padding}}. {item}")
-
-    @staticmethod
-    def handle_input(prompt: str, validator: Callable[[str], bool], error_message: str) -> str:
-        """
-        Continuously prompt the user for input until it passes the validation function.
-        
-        Args:
-            prompt (str): The text to display when asking for input.
-            validator (Callable[[str], bool]): A function that returns True if input is valid.
-            error_message (str): The text to display if the input is invalid.
-            
-        Returns:
-            str: The validated user input.
-        """
-        while True:
-            user_input = input(prompt).strip()
-            if validator(user_input):
-                return user_input
-            print(error_message)
+from validation import validate, Validator, ValidationResult
 
 
-class CLIUI:
-    """
-    A class responsible for structuring the visual layout and flow of the application.
-    It utilizes CLIUtility to build complex, standardized UI components.
-    """
+# =========================
+# Message Types
+# =========================
 
-    @staticmethod
-    def display_header(title: str) -> None:
-        """
-        Display a standardized header with borders and a centered title.
-        
-        Args:
-            title (str): The text to display inside the header.
-        """
-        CLIUtility.display_divider()
-        print(f"{title:
-                 ^{BORDER_LENGTH}}")
-        CLIUtility.display_divider()
+class MessageType(StrEnum):
+    INFO = auto()
+    SUCCESS = auto()
+    WARNING = auto()
+    NOTE = auto()
+    ERROR = auto()
 
-    @staticmethod
-    def prompt_menu_selection(menu_title: str, menu_items: List[str], error_message: str = "Invalid choice. Please try again.") -> int:
-        """
-        Display a full menu layout and safely get the user's valid integer choice.
-        This method acts as a UI component and leaves the action routing to the main engine.
-        
-        Args:
-            menu_title (str): The title to display above the menu.
-            menu_items (Iterable[str]): The list of options available to the user.
-            error_message (str): Message to display upon an invalid selection.
-            
-        Returns:
-            int: The validated choice as an integer (1-based index).
-        Raises:
-            ValueError: if `menu_items` is empty.
-            TypeError: if `menu_items` is not iterable
-        """
-        if not isinstance(menu_items, Iterable):
-            raise TypeError("The menu should be iterable")
-        if menu_items:
-          # 1. Draw the UI components
-          CLIUtility.display_menu(menu_title, menu_items)
-          CLIUtility.display_divider()
-        
-          # 2. Define the validation logic (must be digits and within the list range)
-          validator = lambda x: x.isdigit() and 1 <= int(x) <= len(menu_items)
-        
-          # 3. Get validated input using the utility tool
-          choice = CLIUtility.handle_input(
-            prompt="Enter your choice: ", 
-            validator=validator, 
-            error_message=error_message
-          )
-        
-          # 4. Return the integer choice (SRP: Only get the choice, do not execute the action here)
-          return int(choice)
-        raise ValueError("The list must contain at least one item")
+
+MESSAGE_PREFIXES = {
+    MessageType.INFO: "",
+    MessageType.SUCCESS: "[✔] SUCCESS: ",
+    MessageType.WARNING: "[⚠️] WARNING: ",
+    MessageType.NOTE: "[!] NOTE: ",
+    MessageType.ERROR: "[✖] ERROR: "
+}
+
+
+# =========================
+# Display Functions
+# =========================
+
+def display_divider():
+    print(BORDER_CHAR * BORDER_LENGTH)
+
+
+def display_message(message: str, message_type: MessageType = MessageType.INFO):
+    prefix = MESSAGE_PREFIXES.get(message_type, "")
+    print(f"{prefix}{message}")
+
+
+def display_header(title: str):
+    display_divider()
+    print(f"{title:^{BORDER_LENGTH}}")
+    display_divider()
+
+
+def display_menu(title: str, items: List[str], indent: int = 2):
+    print(title)
+
+    max_digits = len(str(len(items)))
+    space = " " * indent
+
+    for i, item in enumerate(items, start=1):
+        print(f"{space}{i:0{max_digits}d}. {item}")
+
+
+# =========================
+# Input Handler
+# =========================
+
+def get_valid_input(
+    prompt: str,
+    validators: Optional[List[Validator]] = None,
+    return_type: Optional[Type] = None
+):
+    while True:
+        value = read_input(prompt)
+
+        if validators:
+            result = validate(value, validators)
+
+            if not result.is_valid:
+                display_message(result.message, MessageType.ERROR)
+                continue
+
+        try:
+            return convert(value, return_type)
+        except Exception:
+            display_message("Conversion failed", MessageType.ERROR)
+
+
+# =========================
+# Menu Component
+# =========================
+
+def prompt_menu_selection(title: str, items: List[str]) -> int:
+    if not items:
+        raise ValueError("Menu cannot be empty")
+
+    display_menu(title, items)
+    display_divider()
+
+    validators = [
+        lambda x: ValidationResult(x.isdigit(), "Enter a number"),
+        lambda x: ValidationResult(
+            (1 <= int(x) <= len(items)) if x.isdigit() else False,
+            "Choice out of range"
+        )
+    ]
+
+    choice = get_valid_input("Enter your choice: ", validators)
+
+    return int(choice)
