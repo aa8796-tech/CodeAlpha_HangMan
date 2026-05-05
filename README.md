@@ -13,7 +13,7 @@ This project implements the classic Hangman game. It tracks user attempts, valid
 ### Steps
  1. Clone the repository:
    ```bash
-   git clone [https://github.com/aa8796-tech/CodeAlpha_HangMan.git](https://github.com/aa8796-tech/CodeAlpha_HangMan.git)
+   git clone https://github.com/aa8796-tech/CodeAlpha_HangMan.git
    
    ```
  2. Navigate to the project directory:
