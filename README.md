@@ -9,7 +9,7 @@ This project implements the classic Hangman game. It tracks user attempts, valid
  * **State Management:** The GameState class independently tracks the target word, remaining attempts, and guessed letters without relying on the UI layer.
 ## Installation & Execution
 ### Prerequisites
- * Python 3.8 or higher.
+ * Python 3.11 or higher.
 ### Steps
  1. Clone the repository:
    ```bash
