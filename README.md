@@ -54,8 +54,13 @@ Because the code logic is decoupled from the UI, modifying the game is efficient
  * In main.py, add logic inside the play_game loop to catch a specific input (like ?) to trigger the hint method.
 ### 5. Add ASCII Art
  * Create a list of multi-line strings representing the hangman stages. In ui.py, create a function draw_hangman(attempts_left: int) that prints the corresponding string. Call this function in the main game loop in main.py before displaying the display_word.
+### 6. Change the logic of the flow, or change the features of the game
+ * Add modes (e.g. timer, normal, etc.) This is by updating
+ * Different levels can be added (e.g. easy, medium, hard, insane, etc...) This is done by modifying configurations to support additional features such as 'word length' or 'no hints', Then select in the main menu to choose the difficulty level first and modes.
+ * Add changes to app flow, improve user experience, or change the user interface.
+ * **Note:** These modifications will require minor changes or additions and improvements to the main and gamestae structures; But it will be the first time only to be able to make these and other additions possible, because they are almost radical changes in the game's logic.
 ## License
 This project is licensed under the MIT License.
 ## Author
-**AbdElMoneim Ali Ali**
- * **GitHub:** aa8796-tech
+**Name: AbdElMoneim Ali Ali**
+ * **GitHub:** https://github.com/aa8796-tech
