@@ -33,7 +33,7 @@ class HangmanApp:
     def _get_random_word(self) -> str:
         """Selects a random word from the word bank."""
         return random.choice(WORD_BANK)
-
+        
     def show_instructions(self) -> None:
         """Displays the game rules and instructions to the user."""
         clear_screen()
@@ -86,6 +86,7 @@ class HangmanApp:
             else:
                 display_message(f"You guessed wrong, you lost an attempt.)
             pause()
+            
         # Endgame: View the end result
         self.show_game_over(game)
 
