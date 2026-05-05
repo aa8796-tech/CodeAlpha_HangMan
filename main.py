@@ -84,7 +84,7 @@ class HangmanApp:
             if game.process_guess(guess):
                 display_message(f"Your guess is correct, well done.", MessageType.SUCCESS)
             else:
-                display_message(f"You guessed wrong, you lost an attempt.)
+                display_message(f"Your guess is wrong, you lost an attempt.", MessageType.NOTE)
             pause()
             
         # Endgame: View the end result
@@ -103,8 +103,8 @@ class HangmanApp:
         if game.is_win:
             display_message(f"Congratulations! You guessed the word: {game.target_word.upper()}", MessageType.SUCCESS)
         else:
-            display_message(f"Game Over! You've run out of attempts.", MessageType.ERROR)
-            display_message(f"The word was: {game.target_word.upper()}", MessageType.INFO)
+            display_message(f"Game Over! You've run out of attempts.")
+            display_message(f"The word was: {game.target_word.upper()}")
 
         display_divider()
         pause()
@@ -116,7 +116,7 @@ class HangmanApp:
         """
         while True:
             clear_screen()
-            display_header("WELCOME TO HANGMAN ALPHA")
+            display_header("WELCOME TO HANGMAN")
             
             menu_options = ["Play New Game", "Instructions", "Exit Application"]
             choice = prompt_menu_selection("Main Menu Options:", menu_options)
@@ -126,7 +126,7 @@ class HangmanApp:
             elif choice == 2:
                 self.show_instructions()
             elif choice == 3:
-                display_message("Thank you for playing Hangman Alpha. Goodbye!", MessageType.NOTE)
+                display_message("Thank you for playing Hangman. Goodbye!", MessageType.NOTE)
                 sys.exit(0)
 
 
