@@ -5,13 +5,16 @@ from utility import (
     clear_screen,
     pause,
     read_input,
-    convert,
-    BORDER_CHAR,
-    BORDER_LENGTH
+    convert
 )
 
 from validation import validate, Validator, ValidationResult
 
+# =========================
+# Config
+# =========================
+BORDER_CHAR = "="
+BORDER_LENGTH = 50
 
 # =========================
 # Message Types
