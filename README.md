@@ -37,7 +37,7 @@ The project files are organized to enforce the Single Responsibility Principle:
  * **game_state.py**: Contains the GameState class. It manages the pure logic of the game: tracking the target word, counting remaining attempts, processing guesses, and checking for win/loss conditions.
  * **ui.py**: Handles all visual presentation. It contains functions for printing formatted menus, structured headers, and standardized system messages based on MessageType.
  * **validation.py**: A validation engine that uses higher-order functions to check input rules (e.g., is_not_empty, is_alpha, is_single_char).
- * **utility.py**: Contains general console helper functions, such as clearing the terminal screen, pausing execution, and formatting console borders.
+ * **utility.py**: Contains general console helper functions, such as clearing the terminal screen and pausing execution.
  * **configurations.py**: Contains a frozen dataclass for global game settings, primarily the default max_attempts.
  * **word_bank.py**: Contains the repository list of secret words used in the game.
 ## Customization and Expansion
