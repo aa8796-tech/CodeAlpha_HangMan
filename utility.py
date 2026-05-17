@@ -1,12 +1,5 @@
 import os
-from typing import Callable, Optional, Type
-
-# =========================
-# Config
-# =========================
-BORDER_CHAR = "="
-BORDER_LENGTH = 50
-
+from typing import Optional, Type, Any
 
 # =========================
 # Core Utilities
@@ -21,7 +14,11 @@ def pause():
 def read_input(prompt: str) -> str:
     return input(prompt).strip()
 
-def convert(value: str, return_type: Optional[Type]):
+def convert(value: str, return_type: Optional[Type]) -> Any:
     if return_type is None:
         return value
-    return return_type(value)
+
+    try:
+        return return_type(value)
+    except (ValueError, TypeError):
+        return value
