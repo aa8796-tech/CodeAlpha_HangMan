@@ -1,5 +1,5 @@
 # CodeAlpha Hangman
-A Command Line Interface (CLI) Hangman game written in Python. This project is structured into multiple modules to separate game logic, user interface, and input validation, demonstrating maintainable software design principles.
+A Text-based Interface in terminal Hangman game written in Python. This project is structured into multiple modules to separate game logic, user interface, and input validation, demonstrating maintainable software design principles.
 ## Overview
 This project implements the classic Hangman game. It tracks user attempts, validates inputs, and manages the game state through separate Python files rather than a monolithic script. The architecture is designed to make adding new features and modifying existing ones straightforward.
 ## Features
